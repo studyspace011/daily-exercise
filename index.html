@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Live Text Display</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    #liveText {
+      font-size: 2rem;
+      color: #444;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>📡 Real-Time Text Viewer</h1>
+  <div id="liveText">Loading...</div>
+
+  <script>
+    async function fetchText() {
+      const res = await fetch(https://script.google.com/macros/s/AKfycbyDawQ12xPAEGfuIJeKPe2W5rPZ9C4jpteqB6QK4BgcPQxfGWXnGmlkjnqS4l8Q590j/exec); // 👈 यहां अपना Apps Script URL डालो
+      const text = await res.text();
+      document.getElementById("liveText").textContent = text;
+    }
+
+    fetchText();
+    setInterval(fetchText, 3000); // हर 3 सेकंड में text update होगा
+  </script>
+</body>
+</html>
