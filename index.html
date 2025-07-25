@@ -30,15 +30,15 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 1.5rem;
+            padding: 1rem;
         }
         .card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border-radius: 1rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            margin-bottom: 2rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .dark-mode .card {
@@ -55,8 +55,9 @@
             border-radius: 0.75rem;
             font-weight: 600;
             transition: transform 0.2s ease, background 0.2s ease;
+            touch-action: manipulation;
         }
-        .btn-primary:hover {
+        .btn-primary:hover, .btn-primary:active {
             background: linear-gradient(135deg, #4338ca, #6d28d9);
             transform: scale(1.05);
         }
@@ -65,20 +66,22 @@
             border-radius: 0.75rem;
             font-weight: 600;
             transition: transform 0.2s ease, background-color 0.2s ease;
+            touch-action: manipulation;
         }
         .btn-secondary { background-color: #6b7280; color: white; }
-        .btn-secondary:hover { background-color: #4b5563; transform: scale(1.05); }
+        .btn-secondary:hover, .btn-secondary:active { background-color: #4b5563; transform: scale(1.05); }
         .btn-success { background-color: #10b981; color: white; }
-        .btn-success:hover { background-color: #059669; transform: scale(1.05); }
+        .btn-success:hover, .btn-success:active { background-color: #059669; transform: scale(1.05); }
         .btn-danger { background-color: #ef4444; color: white; }
-        .btn-danger:hover { background-color: #dc2626; transform: scale(1.05); }
+        .btn-danger:hover, .btn-danger:active { background-color: #dc2626; transform: scale(1.05); }
         .youtube-embed-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
             height: 0;
             overflow: hidden;
             border-radius: 0.75rem;
+            margin-bottom: 1rem;
         }
         .youtube-embed-container iframe {
             position: absolute;
@@ -88,18 +91,23 @@
             height: 100%;
             border: 0;
         }
+        .youtube-fallback {
+            text-align: center;
+            color: #64748b;
+        }
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 0.5rem;
         }
         .calendar-day {
-            padding: 0.75rem;
+            padding: 0.5rem;
             border-radius: 0.5rem;
             text-align: center;
             font-weight: 500;
             cursor: pointer;
             transition: background-color 0.2s ease, transform 0.2s ease;
+            font-size: 0.875rem;
         }
         .calendar-day.current-month {
             background-color: #e2e8f0;
@@ -130,12 +138,6 @@
             opacity: 0.5;
             cursor: default;
         }
-        .calendar-day:hover:not(.skipped):not(.completed):not(.today):not(.current-month) {
-            background-color: #cbd5e1;
-        }
-        .dark-mode .calendar-day:hover:not(.skipped):not(.completed):not(.today):not(.current-month) {
-            background-color: #64748b;
-        }
         .modal {
             display: none;
             position: fixed;
@@ -152,9 +154,9 @@
         .modal-content {
             background: rgba(255, 255, 255, 0.9);
             margin: auto;
-            padding: 20px;
+            padding: 1.5rem;
             border-radius: 1rem;
-            width: 80%;
+            width: 90%;
             max-width: 500px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
@@ -165,7 +167,7 @@
         .close-button {
             color: #aaa;
             float: right;
-            font-size: 28px;
+            font-size: 1.5rem;
             font-weight: bold;
         }
         .close-button:hover,
@@ -186,13 +188,27 @@
             backdrop-filter: blur(10px);
             border-top: 1px solid rgba(255, 255, 255, 0.2);
             display: none;
+            justify-content: space-around;
+            padding: 0.75rem 0;
         }
         .dark-mode .bottom-nav {
             background: rgba(30, 41, 59, 0.7);
         }
+        .bottom-nav a {
+            font-size: 1.5rem;
+            padding: 0.5rem;
+        }
         @media (max-width: 768px) {
             .bottom-nav { display: flex; }
             #sidebar { display: none; }
+            .card { padding: 1rem; }
+            .btn-primary, .btn-secondary, .btn-success, .btn-danger {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+            h2 { font-size: 1.25rem; }
+            h3 { font-size: 1rem; }
+            .container { padding: 0.5rem; }
         }
         .streak-counter {
             display: inline-flex;
@@ -202,116 +218,119 @@
             padding: 0.5rem 1rem;
             border-radius: 0.75rem;
             font-weight: 600;
+            font-size: 0.875rem;
         }
     </style>
 </head>
 <body class="light-mode">
-    <header class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-6 shadow-md">
+    <header class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white p-4 shadow-md">
         <div class="container flex justify-between items-center">
-            <h1 class="text-3xl font-bold">🏋️‍♂️ My Daily Fitness</h1>
+            <h1 class="text-2xl font-bold">🏋️‍♂️ My Daily Fitness</h1>
             <div class="flex items-center space-x-4">
                 <button id="theme-toggle" class="text-white focus:outline-none">
-                    <i class="fas fa-moon text-2xl"></i>
+                    <i class="fas fa-moon text-xl"></i>
                 </button>
                 <button id="toggle-sidebar" class="md:hidden text-white focus:outline-none">
-                    <i class="fas fa-bars text-2xl"></i>
+                    <i class="fas fa-bars text-xl"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <div class="container flex flex-col md:flex-row mt-8">
-        <aside id="sidebar" class="md:w-1/4 p-4 md:pr-8 bg-transparent rounded-lg shadow-md mb-6 md:mb-0 md:block hidden">
+    <div class="container flex flex-col md:flex-row mt-4">
+        <aside id="sidebar" class="md:w-1/4 p-4 md:pr-8 bg-transparent rounded-lg shadow-md mb-4 md:mb-0 md:block hidden">
             <nav>
-                <ul class="space-y-4">
-                    <li><a href="#daily-plan" class="text-lg font-medium text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100 flex items-center"><i class="fas fa-calendar-alt mr-2"></i>Daily Plan</a></li>
-                    <li><a href="#current-workout" class="text-lg font-medium text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100 flex items-center"><i class="fas fa-dumbbell mr-2"></i>Current Workout</a></li>
-                    <li><a href="#progress-calendar" class="text-lg font-medium text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100 flex items-center"><i class="fas fa-chart-line mr-2"></i>Progress</a></li>
-                    <li><a href="#motivation-tips" class="text-lg font-medium text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100 flex items-center"><i class="fas fa-lightbulb mr-2"></i>Motivation</a></li>
-                    <li><a href="#custom-exercises" class="text-lg font-medium text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100 flex items-center"><i class="fas fa-plus-circle mr-2"></i>Custom Exercises</a></li>
+                <ul class="space-y-3">
+                    <li><a href="#daily-plan" class="text-base font-medium text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100 flex items-center"><i class="fas fa-calendar-alt mr-2"></i>Daily Plan</a></li>
+                    <li><a href="#current-workout" class="text-base font-medium text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100 flex items-center"><i class="fas fa-dumbbell mr-2"></i>Current Workout</a></li>
+                    <li><a href="#progress-calendar" class="text-base font-medium text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100 flex items-center"><i class="fas fa-chart-line mr-2"></i>Progress</a></li>
+                    <li><a href="#motivation-tips" class="text-base font-medium text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100 flex items-center"><i class="fas fa-lightbulb mr-2"></i>Motivation</a></li>
+                    <li><a href="#custom-exercises" class="text-base font-medium text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100 flex items-center"><i class="fas fa-plus-circle mr-2"></i>Custom Exercises</a></li>
                 </ul>
             </nav>
         </aside>
 
         <main class="md:w-3/4 md:pl-8">
             <section id="daily-plan" class="card">
-                <h2 class="text-2xl font-semibold text-indigo-700 dark-mode:text-indigo-300 mb-4 flex items-center"><i class="fas fa-clipboard-list mr-2"></i>1. Daily Exercise Plan (15–25 min)</h2>
-                <div class="flex items-center mb-4">
+                <h2 class="text-xl font-semibold text-indigo-700 dark-mode:text-indigo-300 mb-3 flex items-center"><i class="fas fa-clipboard-list mr-2"></i>1. Daily Exercise Plan (15–25 min)</h2>
+                <div class="flex items-center mb-3">
                     <span class="streak-counter"><i class="fas fa-fire mr-2"></i>Streak: <span id="streak-count">0</span> days</span>
                 </div>
-                <p class="text-gray-600 dark-mode:text-gray-300 mb-4">Frequency: 6 days/week | Time: Best in morning (energy uplift + discipline)</p>
-                <div class="mb-6">
-                    <h3 class="text-xl font-medium text-gray-700 dark-mode:text-gray-200 mb-2 flex items-center"><i class="fas fa-sun mr-2"></i>Warm-Up (3 min) – Roz</h3>
-                    <ul class="list-disc list-inside space-y-2 text-gray-600 dark-mode:text-gray-300" id="warm-up-list"></ul>
+                <p class="text-gray-600 dark-mode:text-gray-300 mb-3 text-sm">Frequency: 6 days/week | Time: Best in morning (energy uplift + discipline)</p>
+                <div class="mb-4">
+                    <h3 class="text-base font-medium text-gray-700 dark-mode:text-gray-200 mb-2 flex items-center"><i class="fas fa-sun mr-2"></i>Warm-Up (3 min) – Roz</h3>
+                    <ul class="list-disc list-inside space-y-1 text-gray-600 dark-mode:text-gray-300 text-sm" id="warm-up-list"></ul>
                 </div>
-                <div class="mb-6">
-                    <h3 class="text-xl font-medium text-gray-700 dark-mode:text-gray-200 mb-2 flex items-center"><i class="fas fa-running mr-2"></i>Main Workout (12–15 min) – Alternate Days:</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-blue-50 dark-mode:bg-blue-900 p-4 rounded-lg">
-                            <h4 class="font-semibold text-lg text-blue-700 dark-mode:text-blue-300 mb-2 flex items-center"><i class="fas fa-check-circle mr-2"></i>DAY 1, 3, 5: Core + Posture</h4>
-                            <ul class="list-disc list-inside space-y-2 text-gray-600 dark-mode:text-gray-300" id="core-posture-list"></ul>
+                <div class="mb-4">
+                    <h3 class="text-base font-medium text-gray-700 dark-mode:text-gray-200 mb-2 flex items-center"><i class="fas fa-running mr-2"></i>Main Workout (12–15 min) – Alternate Days:</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-blue-50 dark-mode:bg-blue-900 p-3 rounded-lg">
+                            <h4 class="font-semibold text-sm text-blue-700 dark-mode:text-blue-300 mb-2 flex items-center"><i class="fas fa-check-circle mr-2"></i>DAY 1, 3, 5: Core + Posture</h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-600 dark-mode:text-gray-300 text-sm" id="core-posture-list"></ul>
                         </div>
-                        <div class="bg-green-50 dark-mode:bg-green-900 p-4 rounded-lg">
-                            <h4 class="font-semibold text-lg text-green-700 dark-mode:text-green-300 mb-2 flex items-center"><i class="fas fa-check-circle mr-2"></i>DAY 2, 4, 6: Stamina + Full Body</h4>
-                            <ul class="list-disc list-inside space-y-2 text-gray-600 dark-mode:text-gray-300" id="stamina-full-body-list"></ul>
+                        <div class="bg-green-50 dark-mode:bg-green-900 p-3 rounded-lg">
+                            <h4 class="font-semibold text-sm text-green-700 dark-mode:text-green-300 mb-2 flex items-center"><i class="fas fa-check-circle mr-2"></i>DAY 2, 4, 6: Stamina + Full Body</h4>
+                            <ul class="list-disc list-inside space-y-1 text-gray-600 dark-mode:text-gray-300 text-sm" id="stamina-full-body-list"></ul>
                         </div>
                     </div>
                 </div>
-                <div class="mb-6">
-                    <h3 class="text-xl font-medium text-gray-700 dark-mode:text-gray-200 mb-2 flex items-center"><i class="fas fa-stretch mr-2"></i>2. Static Stretching Routine (10 min)</h3>
-                    <p class="text-gray-600 dark-mode:text-gray-300 mb-2">Do after workout + before bed (night)</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-600 dark-mode:text-gray-300" id="stretching-list"></ul>
+                <div class="mb-4">
+                    <h3 class="text-base font-medium text-gray-700 dark-mode:text-gray-200 mb-2 flex items-center"><i class="fas fa-stretch mr-2"></i>2. Static Stretching Routine (10 min)</h3>
+                    <p class="text-gray-600 dark-mode:text-gray-300 mb-2 text-sm">Do after workout + before bed (night)</p>
+                    <ul class="list-disc list-inside space-y-1 text-gray-600 dark-mode:text-gray-300 text-sm" id="stretching-list"></ul>
                 </div>
-                <div class="mb-6">
-                    <h3 class="text-xl font-medium text-gray-700 dark-mode:text-gray-200 mb-2 flex items-center"><i class="fas fa-heartbeat mr-2"></i>3. Kegel & Pelvic Floor Plan (Daily 10 min)</h3>
-                    <p class="text-gray-600 dark-mode:text-gray-300 mb-2">Goal: Urge control, sexual stamina, pelvic strength</p>
-                    <p class="text-gray-600 dark-mode:text-gray-300 mb-2">Time: Raat me (bed pe late hue bhi kar sakte ho)</p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-600 dark-mode:text-gray-300" id="kegel-list"></ul>
-                    <p class="text-gray-500 dark-mode:text-gray-400 text-sm mt-2">🧠 Reminder: Kegel karte waqt stomach, legs, ***** tense na ho — sirf andar ka control. Breathe normally.</p>
+                <div class="mb-4">
+                    <h3 class="text-base font-medium text-gray-700 dark-mode:text-gray-200 mb-2 flex items-center"><i class="fas fa-heartbeat mr-2"></i>3. Kegel & Pelvic Floor Plan (Daily 10 min)</h3>
+                    <p class="text-gray-600 dark-mode:text-gray-300 mb-2 text-sm">Goal: Urge control, sexual stamina, pelvic strength</p>
+                    <p class="text-gray-600 dark-mode:text-gray-300 mb-2 text-sm">Time: Raat me (bed pe late hue bhi kar sakte ho)</p>
+                    <ul class="list-disc list-inside space-y-1 text-gray-600 dark-mode:text-gray-300 text-sm" id="kegel-list"></ul>
+                    <p class="text-gray-500 dark-mode:text-gray-400 text-xs mt-2">🧠 Reminder: Kegel karte waqt stomach, legs, butt tense na ho — sirf andar ka control. Breathe normally.</p>
                 </div>
-                <button id="start-workout-btn" class="btn-primary w-full md:w-auto mt-4">Start Today's Workout</button>
-                <button id="set-reminder-btn" class="btn-secondary w-full md:w-auto mt-4 ml-0 md:ml-4">Set Reminder</button>
+                <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
+                    <button id="start-workout-btn" class="btn-primary w-full md:w-auto">Start Today's Workout</button>
+                    <button id="set-reminder-btn" class="btn-secondary w-full md:w-auto">Set Reminder</button>
+                </div>
             </section>
 
             <section id="current-workout" class="card hidden">
-                <h2 class="text-2xl font-semibold text-indigo-700 dark-mode:text-indigo-300 mb-4 flex items-center"><i class="fas fa-play-circle mr-2"></i>Current Workout</h2>
+                <h2 class="text-xl font-semibold text-indigo-700 dark-mode:text-indigo-300 mb-3 flex items-center"><i class="fas fa-play-circle mr-2"></i>Current Workout</h2>
                 <div id="exercise-display" class="text-center">
-                    <h3 id="current-exercise-name" class="text-3xl font-bold text-gray-800 dark-mode:text-gray-100 mb-2"></h3>
-                    <p id="current-exercise-reps" class="text-xl text-gray-600 dark-mode:text-gray-300 mb-4"></p>
-                    <div id="timer-display" class="text-5xl font-extrabold text-indigo-600 dark-mode:text-indigo-300 mb-6">00:00</div>
-                    <div class="flex justify-center space-x-4 mb-6">
+                    <h3 id="current-exercise-name" class="text-2xl font-bold text-gray-800 dark-mode:text-gray-100 mb-2"></h3>
+                    <p id="current-exercise-reps" class="text-base text-gray-600 dark-mode:text-gray-300 mb-3"></p>
+                    <div id="timer-display" class="text-4xl font-extrabold text-indigo-600 dark-mode:text-indigo-300 mb-4">00:00</div>
+                    <div class="flex flex-col md:flex-row justify-center space-y-2 md:space-y-0 md:space-x-2 mb-4">
                         <button id="start-pause-btn" class="btn-primary"><i class="fas fa-play mr-2"></i>Start</button>
                         <button id="reset-btn" class="btn-secondary"><i class="fas fa-redo mr-2"></i>Reset</button>
                         <button id="next-exercise-btn" class="btn-success"><i class="fas fa-forward mr-2"></i>Next</button>
                     </div>
-                    <div id="youtube-video-container" class="youtube-embed-container mb-6"></div>
-                    <p id="next-exercise-info" class="text-lg text-gray-700 dark-mode:text-gray-300 mt-4"></p>
+                    <div id="youtube-video-container" class="youtube-embed-container mb-4"></div>
+                    <p id="next-exercise-info" class="text-base text-gray-700 dark-mode:text-gray-300 mt-3"></p>
                 </div>
             </section>
 
             <section id="progress-calendar" class="card">
-                <h2 class="text-2xl font-semibold text-indigo-700 dark-mode:text-indigo-300 mb-4 flex items-center"><i class="fas fa-calendar-check mr-2"></i>Daily Progress Calendar</h2>
-                <div class="flex justify-between items-center mb-4">
-                    <button id="prev-month-btn" class="btn-secondary px-4 py-2 rounded-lg"><i class="fas fa-chevron-left"></i></button>
-                    <h3 id="current-month-year" class="text-xl font-semibold"></h3>
-                    <button id="next-month-btn" class="btn-secondary px-4 py-2 rounded-lg"><i class="fas fa-chevron-right"></i></button>
+                <h2 class="text-xl font-semibold text-indigo-700 dark-mode:text-indigo-300 mb-3 flex items-center"><i class="fas fa-calendar-check mr-2"></i>Daily Progress Calendar</h2>
+                <div class="flex justify-between items-center mb-3">
+                    <button id="prev-month-btn" class="btn-secondary px-3 py-1 rounded-lg"><i class="fas fa-chevron-left"></i></button>
+                    <h3 id="current-month-year" class="text-base font-semibold"></h3>
+                    <button id="next-month-btn" class="btn-secondary px-3 py-1 rounded-lg"><i class="fas fa-chevron-right"></i></button>
                 </div>
-                <div class="calendar-grid mb-4">
-                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200">Sun</div>
-                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200">Mon</div>
-                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200">Tue</div>
-                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200">Wed</div>
-                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200">Thu</div>
-                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200">Fri</div>
-                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200">Sat</div>
+                <div class="calendar-grid mb-3">
+                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200 text-xs">Sun</div>
+                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200 text-xs">Mon</div>
+                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200 text-xs">Tue</div>
+                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200 text-xs">Wed</div>
+                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200 text-xs">Thu</div>
+                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200 text-xs">Fri</div>
+                    <div class="font-bold text-center text-gray-700 dark-mode:text-gray-200 text-xs">Sat</div>
                 </div>
                 <div id="calendar-days" class="calendar-grid"></div>
-                <div class="mt-6">
-                    <canvas id="progress-chart" height="100"></canvas>
+                <div class="mt-4">
+                    <canvas id="progress-chart" height="80"></canvas>
                 </div>
-                <div class="mt-6 p-4 bg-blue-50 dark-mode:bg-blue-900 rounded-lg text-gray-700 dark-mode:text-gray-300">
-                    <p class="font-semibold mb-2">Mark Today's Progress:</p>
-                    <div class="flex space-x-4">
+                <div class="mt-4 p-3 bg-blue-50 dark-mode:bg-blue-900 rounded-lg text-gray-700 dark-mode:text-gray-300">
+                    <p class="font-semibold mb-2 text-sm">Mark Today's Progress:</p>
+                    <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
                         <button id="mark-completed-btn" class="btn-success flex-1"><i class="fas fa-check-circle mr-2"></i>Mark Completed</button>
                         <button id="mark-skipped-btn" class="btn-danger flex-1"><i class="fas fa-times-circle mr-2"></i>Mark Skipped</button>
                     </div>
@@ -319,13 +338,13 @@
             </section>
 
             <section id="custom-exercises" class="card">
-                <h2 class="text-2xl font-semibold text-indigo-700 dark-mode:text-indigo-300 mb-4 flex items-center"><i class="fas fa-plus-circle mr-2"></i>Add Custom Exercise</h2>
-                <div class="space-y-4">
-                    <input id="custom-exercise-name" type="text" placeholder="Exercise Name" class="w-full p-2 border rounded-lg dark-mode:bg-gray-700 dark-mode:text-gray-200">
-                    <input id="custom-exercise-reps" type="text" placeholder="Reps (e.g., 10 reps)" class="w-full p-2 border rounded-lg dark-mode:bg-gray-700 dark-mode:text-gray-200">
-                    <input id="custom-exercise-duration" type="number" placeholder="Duration (seconds)" class="w-full p-2 border rounded-lg dark-mode:bg-gray-700 dark-mode:text-gray-200">
-                    <input id="custom-exercise-video" type="text" placeholder="YouTube Video URL" class="w-full p-2 border rounded-lg dark-mode:bg-gray-700 dark-mode:text-gray-200">
-                    <select id="custom-exercise-type" class="w-full p-2 border rounded-lg dark-mode:bg-gray-700 dark-mode:text-gray-200">
+                <h2 class="text-xl font-semibold text-indigo-700 dark-mode:text-indigo-300 mb-3 flex items-center"><i class="fas fa-plus-circle mr-2"></i>Add Custom Exercise</h2>
+                <div class="space-y-3">
+                    <input id="custom-exercise-name" type="text" placeholder="Exercise Name" class="w-full p-2 border rounded-lg dark-mode:bg-gray-700 dark-mode:text-gray-200 text-sm">
+                    <input id="custom-exercise-reps" type="text" placeholder="Reps (e.g., 10 reps)" class="w-full p-2 border rounded-lg dark-mode:bg-gray-700 dark-mode:text-gray-200 text-sm">
+                    <input id="custom-exercise-duration" type="number" placeholder="Duration (seconds)" class="w-full p-2 border rounded-lg dark-mode:bg-gray-700 dark-mode:text-gray-200 text-sm">
+                    <input id="custom-exercise-video" type="text" placeholder="YouTube Video URL (e.g., https://www.youtube.com/embed/VIDEO_ID)" class="w-full p-2 border rounded-lg dark-mode:bg-gray-700 dark-mode:text-gray-200 text-sm">
+                    <select id="custom-exercise-type" class="w-full p-2 border rounded-lg dark-mode:bg-gray-700 dark-mode:text-gray-200 text-sm">
                         <option value="warmUp">Warm-Up</option>
                         <option value="corePosture">Core + Posture</option>
                         <option value="staminaFullBody">Stamina + Full Body</option>
@@ -334,15 +353,15 @@
                     </select>
                     <button id="add-custom-exercise-btn" class="btn-primary w-full">Add Exercise</button>
                 </div>
-                <div class="mt-6">
-                    <h3 class="text-xl font-medium text-gray-700 dark-mode:text-gray-200 mb-2">Your Custom Exercises</h3>
-                    <ul id="custom-exercise-list" class="list-disc list-inside space-y-2 text-gray-600 dark-mode:text-gray-300"></ul>
+                <div class="mt-4">
+                    <h3 class="text-base font-medium text-gray-700 dark-mode:text-gray-200 mb-2">Your Custom Exercises</h3>
+                    <ul id="custom-exercise-list" class="list-disc list-inside space-y-1 text-gray-600 dark-mode:text-gray-300 text-sm"></ul>
                 </div>
             </section>
 
             <section id="motivation-tips" class="card">
-                <h2 class="text-2xl font-semibold text-indigo-700 dark-mode:text-indigo-300 mb-4 flex items-center"><i class="fas fa-lightbulb mr-2"></i>Motivation Tips</h2>
-                <ul class="list-disc list-inside space-y-3 text-gray-600 dark-mode:text-gray-300">
+                <h2 class="text-xl font-semibold text-indigo-700 dark-mode:text-indigo-300 mb-3 flex items-center"><i class="fas fa-lightbulb mr-2"></i>Motivation Tips</h2>
+                <ul class="list-disc list-inside space-y-2 text-gray-600 dark-mode:text-gray-300 text-sm">
                     <li><span class="font-semibold">Energy loss post-masturbation:</span> Do light Kegel + stretching next 15 min → control wapas aata hai.</li>
                     <li><span class="font-semibold">Tight joints:</span> Stretching daily rakhna mandatory hai — 1 month me difference dikhne lagega.</li>
                     <li><span class="font-semibold">Low morning energy:</span> Start with deep breaths + jumping jacks × 20 – brain active ho jata hai.</li>
@@ -352,19 +371,19 @@
         </main>
     </div>
 
-    <nav class="bottom-nav flex justify-around p-4 md:hidden">
-        <a href="#daily-plan" class="text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100"><i class="fas fa-calendar-alt text-xl"></i></a>
-        <a href="#current-workout" class="text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100"><i class="fas fa-dumbbell text-xl"></i></a>
-        <a href="#progress-calendar" class="text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100"><i class="fas fa-chart-line text-xl"></i></a>
-        <a href="#motivation-tips" class="text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100"><i class="fas fa-lightbulb text-xl"></i></a>
-        <a href="#custom-exercises" class="text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100"><i class="fas fa-plus-circle text-xl"></i></a>
+    <nav class="bottom-nav flex justify-around p-2 md:hidden">
+        <a href="#daily-plan" class="text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100"><i class="fas fa-calendar-alt text-lg"></i></a>
+        <a href="#current-workout" class="text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100"><i class="fas fa-dumbbell text-lg"></i></a>
+        <a href="#progress-calendar" class="text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100"><i class="fas fa-chart-line text-lg"></i></a>
+        <a href="#motivation-tips" class="text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100"><i class="fas fa-lightbulb text-lg"></i></a>
+        <a href="#custom-exercises" class="text-indigo-700 dark-mode:text-indigo-300 hover:text-indigo-900 dark-mode:hover:text-indigo-100"><i class="fas fa-plus-circle text-lg"></i></a>
     </nav>
 
     <div id="message-modal" class="modal">
         <div class="modal-content">
             <span class="close-button">×</span>
-            <p id="modal-message" class="text-lg text-center"></p>
-            <div class="flex justify-center mt-4">
+            <p id="modal-message" class="text-base text-center"></p>
+            <div class="flex justify-center mt-3">
                 <button id="modal-ok-btn" class="btn-primary">OK</button>
             </div>
         </div>
@@ -391,58 +410,57 @@
             document.body.classList.toggle('light-mode');
             document.body.classList.toggle('dark-mode');
             const isDarkMode = document.body.classList.contains('dark-mode');
-            themeToggleBtn.innerHTML = `<i class="fas fa-${isDarkMode ? 'sun' : 'moon'} text-2xl"></i>`;
+            themeToggleBtn.innerHTML = `<i class="fas fa-${isDarkMode ? 'sun' : 'moon'} text-xl"></i>`;
             localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-            updateChart(); // Update chart colors for theme
+            updateChart();
         });
 
-        // Load theme from localStorage
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.remove('light-mode');
             document.body.classList.add('dark-mode');
-            themeToggleBtn.innerHTML = '<i class="fas fa-sun text-2xl"></i>';
+            themeToggleBtn.innerHTML = '<i class="fas fa-sun text-xl"></i>';
         }
 
         // Exercise Data
+        // Note: Replace these placeholder video URLs with actual YouTube embed URLs (e.g., https://www.youtube.com/embed/VIDEO_ID)
         let exercises = JSON.parse(localStorage.getItem('exercises')) || {
             warmUp: [
-                { name: "Neck rolls", reps: "5 (each side)", duration: 30, video: "https://www.youtube.com/embed/M97vR2x4YMw" },
-                { name: "Shoulder rotation", reps: "10", duration: 30, video: "https://www.youtube.com/embed/L1c2J85gQ_E" },
-                { name: "Jumping jacks", reps: "20", duration: 30, video: "https://www.youtube.com/embed/Up03b-t9k5w" },
-                { name: "Arm swings", reps: "10", duration: 30, video: "https://www.youtube.com/embed/yQpQh0N2w8Q" },
-                { name: "Light march in place", reps: "30 sec", duration: 30, video: "https://www.youtube.com/embed/E-1H0_o982A" }
+                { name: "Neck rolls", reps: "5 (each side)", duration: 30, video: "https://www.youtube-nocookie.com/embed/q_uOqXQhBq4?si=uDS8Vx3492IkC_vK" },
+                { name: "Shoulder rotation", reps: "10", duration: 30, video: "https://www.youtube-nocookie.com/embed/L1c2J85gQ_E" },
+                { name: "Jumping jacks", reps: "20", duration: 30, video: "https://www.youtube-nocookie.com/embed/Up03b-t9k5w" },
+                { name: "Arm swings", reps: "10", duration: 30, video: "https://www.youtube-nocookie.com/embed/yQpQh0N2w8Q" },
+                { name: "Light march in place", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/E-1H0_o982A" }
             ],
             corePosture: [
-                { name: "Wall Angel", reps: "10 reps", duration: 60, video: "https://www.youtube.com/embed/fW_g8I_aK6c" },
-                { name: "Bird Dog", reps: "10 reps each side", duration: 60, video: "https://www.youtube.com/embed/wiFNA3QB_Ew" },
-                { name: "Glute Bridge", reps: "15", duration: 60, video: "https://www.youtube.com/embed/ayh01z2U65g" },
-                { name: "Superman Hold", reps: "30 sec", duration: 30, video: "https://www.youtube.com/embed/z6CgC_e1y4M" },
-                { name: "Plank", reps: "start 20 sec → aim 1 min", duration: 60, video: "https://www.youtube.com/embed/ASdvN_Xok6c" }
+                { name: "Wall Angel", reps: "10 reps", duration: 60, video: "https://www.youtube-nocookie.com/embed/fW_g8I_aK6c" },
+                { name: "Bird Dog", reps: "10 reps each side", duration: 60, video: "https://www.youtube-nocookie.com/embed/wiFNA3QB_Ew" },
+                { name: "Glute Bridge", reps: "15", duration: 60, video: "https://www.youtube-nocookie.com/embed/ayh01z2U65g" },
+                { name: "Superman Hold", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/z6CgC_e1y4M" },
+                { name: "Plank", reps: "start 20 sec → aim 1 min", duration: 60, video: "https://www.youtube-nocookie.com/embed/ASdvN_Xok6c" }
             ],
             staminaFullBody: [
-                { name: "Squats", reps: "15", duration: 60, video: "https://www.youtube.com/embed/ultWfYNEkEM" },
-                { name: "Incline Push-ups", reps: "10", duration: 60, video: "https://www.youtube.com/embed/3L_s6p8s96E" },
-                { name: "Step-up", reps: "10/leg", duration: 60, video: "https://www.youtube.com/embed/V6dK11Q4yI8" },
-                { name: "High Knees", reps: "30 sec", duration: 30, video: "https://www.youtube.com/embed/QP_x6s-vQ8I" },
-                { name: "Side lunges", reps: "10", duration: 60, video: "https://www.youtube.com/embed/Zg2C_u_gqjY" },
-                { name: "Mountain Climbers", reps: "20", duration: 60, video: "https://www.youtube.com/embed/nmwgirgX2QU" }
+                { name: "Squats", reps: "15", duration: 60, video: "https://www.youtube-nocookie.com/embed/ultWfYNEkEM" },
+                { name: "Incline Push-ups", reps: "10", duration: 60, video: "https://www.youtube-nocookie.com/embed/3L_s6p8s96E" },
+                { name: "Step-up", reps: "10/leg", duration: 60, video: "https://www.youtube-nocookie.com/embed/V6dK11Q4yI8" },
+                { name: "High Knees", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/QP_x6s-vQ8I" },
+                { name: "Side lunges", reps: "10", duration: 60, video: "https://www.youtube-nocookie.com/embed/Zg2C_u_gqjY" },
+                { name: "Mountain Climbers", reps: "20", duration: 60, video: "https://www.youtube-nocookie.com/embed/nmwgirgX2QU" }
             ],
             stretching: [
-                { name: "Toe Touch Hold", reps: "30 sec", duration: 30, video: "https://www.youtube.com/embed/S_x2F603M5o" },
-                { name: "Cat-Cow Stretch", reps: "30 sec", duration: 30, video: "https://www.youtube.com/embed/kqn2_Xg_J5E" },
-                { name: "Seated Forward Fold", reps: "30 sec", duration: 30, video: "https://www.youtube.com/embed/M1Q92B6W66U" },
-                { name: "Butterfly Stretch", reps: "30 sec", duration: 30, video: "https://www.youtube.com/embed/HwJ8d_wG160" },
-                { name: "Child's Pose", reps: "1 min", duration: 60, video: "https://www.youtube.com/embed/2MJGg-d_M04" },
-                { name: "Shoulder Stretch", reps: "30 sec each", duration: 60, video: "https://www.youtube.com/embed/e_yWp9g9R7g" },
-                { name: "Neck side stretch", reps: "30 sec each", duration: 60, video: "https://www.youtube.com/embed/z4tC99z3N8U" },
-                { name: "Deep breathing", reps: "1 min", duration: 60, video: "https://www.youtube.com/embed/nmF1f7C442Q" }
+                { name: "Toe Touch Hold", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/S_x2F603M5o" },
+                { name: "Cat-Cow Stretch", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/kqn2_Xg_J5E" },
+                { name: "Seated Forward Fold", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/M1Q92B6W66U" },
+                { name: "Butterfly Stretch", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/HwJ8d_wG160" },
+                { name: "Child's Pose", reps: "1 min", duration: 60, video: "https://www.youtube-nocookie.com/embed/2MJGg-d_M04" },
+                { name: "Shoulder Stretch", reps: "30 sec", duration: 60, video: "https://www.youtube-nocookie.com/embed/e_yWp9g9R7g" },
+                { name: "Neck side stretch", reps: "30 sec each", duration: 60, video: "https://www.youtube-nocookie.com/embed/z4tC99z3N8U" },
+                { name: "Deep breathing", reps: "1 min", duration: 60, video: "https://www.youtube-nocookie.com/embed/nmF1f7C442Q" }
             ],
             kegel: [
-                { name: "Basic Kegel Squeeze", reps: "Hold 5 sec × 10 reps", duration: 50, video: "https://www.youtube.com/embed/0G7L-sU39m0" },
-                { name: "Fast Kegel Pulses", reps: "1 sec hold/release × 15 reps", duration: 15, video: "https://www.youtube.com/embed/0G7L-sU39m0" },
-                { name: "Elevator Kegel", reps: "tighten slowly till full → relax slowly × 5 reps", duration: 50, video: "https://www.youtube.com/embed/0G7L-sU39m0" },
-                { name: "Glute Bridge Hold + Kegel", reps: "10 sec × 5 reps", duration: 50, video: "https://www.youtube.com/embed/ayh01z2U65g" },
-                { name: "Relaxation Breathing", reps: "Belly breathing × 2 min", duration: 120, video: "https://www.youtube.com/embed/nmF1f7C442Q" }
+                { name: "Basic Kegel Squeeze", reps: "Hold 5 sec × 10 reps", duration: 50, video: "https://www.youtube-nocookie.com/embed/0G7L-sU39m0" },
+                { name: "Fast Kegel Pulses", reps: "1 sec × 15 reps", duration: 15, video: "https://www.youtube-nocookie.com/embed/0G7L-sU39m0" },
+                { name: "Elevator Kegel", reps: "tighten slowly till full → relax slowly × 10", duration: 50, video: "https://www.youtube-nocookie.com/embed/0G7L-sU39m0" },
+                { name: "Glute Bridge Hold + Kegel", reps: "10 sec × 2", duration: 50, video: "https://www.youtube-nocookie.com/embed/ayh01z2U65g" }
             ]
         };
 
@@ -470,22 +488,23 @@
         const markCompletedBtn = document.getElementById('mark-completed-btn');
         const markSkippedBtn = document.getElementById('mark-skipped-btn');
         const toggleSidebarBtn = document.getElementById('toggle-sidebar');
-        const sidebar = document.getElementById('sidebar');
+        const sidebar = document.querySelector('#sidebar');
         const setReminderBtn = document.getElementById('set-reminder-btn');
-        const customExerciseName = document.getElementById('custom-exercise-name');
-        const customExerciseReps = document.getElementById('custom-exercise-reps');
-        const customExerciseDuration = document.getElementById('custom-exercise-duration');
-        const customExerciseVideo = document.getElementById('custom-exercise-video');
-        const customExerciseType = document.getElementById('custom-exercise-type');
+        const customExerciseName = document.querySelector('#custom-exercise-name');
+        const customExerciseReps = document.querySelector('#custom-exercise-reps');
+        const customExerciseDuration = document.querySelector('#custom-exercise-duration');
+        const customExerciseVideo = document.querySelector('#custom-exercise-video');
+        const customExerciseType = document.querySelector('#custom-exercise-type');
         const addCustomExerciseBtn = document.getElementById('add-custom-exercise-btn');
         const customExerciseList = document.getElementById('custom-exercise-list');
-        const streakCountDisplay = document.getElementById('streak-count');
+        const streakCountDisplay = document.querySelector('#streak-count');
 
         // Global Variables
         let timerInterval, timeLeft, isPaused = true;
-        let currentWorkoutPlan = [], currentExerciseIndex = 0, currentWorkoutType = '';
+        let currentWorkoutPlan = [], currentExerciseIndex = 0;
+        let currentWorkoutType = '';
         let currentCalendarDate = new Date();
-        let exerciseProgress = JSON.parse(localStorage.getItem('exerciseProgress')) || {};
+        let exerciseWorkoutProgress = JSON.parse(localStorage.getItem('exerciseWorkoutProgress')) || {};
         let workoutStreak = JSON.parse(localStorage.getItem('workoutStreak')) || { count: 0, lastDate: '' };
 
         // Timer Functions
@@ -542,9 +561,11 @@
             updateTimerDisplay();
             isPaused = true;
             pauseTimer();
+            console.log('Loading video:', exercise.video); // Debug video URL
             youtubeVideoContainer.innerHTML = exercise.video ?
-                `<iframe src="${exercise.video}?autoplay=0&controls=1&modestbranding=1&rel=0" title="${exercise.name} video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>` :
-                `<p class="text-gray-500 dark-mode:text-gray-400">No reference video available for this exercise.</p>`;
+                `<iframe src="${exercise.video}?autoplay=0&controls=1&modestbranding=1&rel=0" title="${exercise.name} video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                 <p class="youtube-fallback text-sm">Video not loading? <a href="${exercise.video.replace('/embed/', '/watch?v=')}" target="_blank">Watch on YouTube</a></p>` :
+                `<p class="youtube-fallback text-sm">No reference video available for this exercise.</p>`;
             nextExerciseInfo.textContent = currentExerciseIndex + 1 < currentWorkoutPlan.length ?
                 `Next: ${currentWorkoutPlan[currentExerciseIndex + 1].name} (${currentWorkoutPlan[currentExerciseIndex + 1].reps})` :
                 "This is the last exercise in this segment!";
@@ -564,13 +585,13 @@
         function initializeWorkoutPlan() {
             const today = new Date();
             const dayOfWeek = today.getDay();
-            if (dayOfWeek === 1 || dayOfWeek === 3 || dayOfWeek === 5) {
+            if (dayOfWeek === 1 || dayOfWeek === 3 || dayOfWeek === 5) { // Mon, Wed, Fri
                 currentWorkoutType = 'corePosture';
                 currentWorkoutPlan = [...exercises.warmUp, ...exercises.corePosture, ...exercises.stretching, ...exercises.kegel];
-            } else if (dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6) {
+            } else if (dayOfWeek === 2 || dayOfWeek === 4 || dayOfWeek === 6) { // Tue, Thu, Sat
                 currentWorkoutType = 'staminaFullBody';
                 currentWorkoutPlan = [...exercises.warmUp, ...exercises.staminaFullBody, ...exercises.stretching, ...exercises.kegel];
-            } else {
+            } else { // Sunday - Rest day, optional yoga, stretching, kegel
                 currentWorkoutType = 'restDay';
                 currentWorkoutPlan = [...exercises.stretching, ...exercises.kegel];
                 showMessage("It's Sunday! Rest & Recovery day. Focus on stretching and Kegel.");
@@ -611,10 +632,10 @@
                 const today = new Date();
                 const todayFormatted = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
                 if (fullDate === todayFormatted) dayElement.classList.add('today');
-                if (exerciseProgress[fullDate]) dayElement.classList.add(exerciseProgress[fullDate]);
+                if (exerciseWorkoutProgress[fullDate]) dayElement.classList.add(exerciseWorkoutProgress[fullDate]);
                 dayElement.addEventListener('click', () => {
                     if (fullDate !== todayFormatted) {
-                        showMessage(`You can only mark today's progress. For ${fullDate}, it is already marked as ${exerciseProgress[fullDate] || 'unmarked'}.`);
+                        showMessage(`You can only mark today's workout. For ${fullDate}, it is already marked as ${exerciseWorkoutProgress[fullDate] || 'unmarked'}.`);
                     }
                 });
                 calendarDaysContainer.appendChild(dayElement);
@@ -623,8 +644,8 @@
         }
 
         function saveProgress(date, status) {
-            exerciseProgress[date] = status;
-            localStorage.setItem('exerciseProgress', JSON.stringify(exerciseProgress));
+            exerciseWorkoutProgress[date] = status;
+            localStorage.setItem('exerciseWorkoutProgress', JSON.stringify(exerciseWorkoutProgress));
             updateStreak(date, status);
             renderCalendar();
         }
@@ -635,8 +656,8 @@
             yesterday.setDate(today.getDate() - 1);
             const yesterdayFormatted = `${yesterday.getFullYear()}-${(yesterday.getMonth() + 1).toString().padStart(2, '0')}-${yesterday.getDate().toString().padStart(2, '0')}`;
             if (status === 'completed' && date === `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`) {
-                if (workoutStreak.lastDate === yesterdayFormatted && exerciseProgress[yesterdayFormatted] === 'completed') {
-                    workoutStreak.count++;
+                if (workoutStreak.lastDate === yesterdayFormatted && exerciseWorkoutProgress[yesterdayFormatted] === 'completed') {
+                    workoutStreak.count += 1;
                 } else if (workoutStreak.lastDate !== date) {
                     workoutStreak.count = 1;
                 }
@@ -659,7 +680,7 @@
             const labels = Array.from({ length: daysInMonth }, (_, i) => i + 1);
             const completedDays = labels.map(day => {
                 const date = `${year}-${(month + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-                return exerciseProgress[date] === 'completed' ? 1 : 0;
+                return exerciseWorkoutProgress[date] === 'completed' ? 1 : 0;
             });
             const isDarkMode = document.body.classList.contains('dark-mode');
             if (progressChart) progressChart.destroy();
@@ -702,7 +723,12 @@
         function deleteCustomExercise(type, index) {
             exercises[type].splice(index, 1);
             localStorage.setItem('exercises', JSON.stringify(exercises));
-            populateList();
+            // Re-populate all lists to ensure custom exercises are updated everywhere
+            populateList(warmUpList, exercises.warmUp);
+            populateList(corePostureList, exercises.corePosture);
+            populateList(staminaFullBodyList, exercises.staminaFullBody);
+            populateList(stretchingList, exercises.stretching);
+            populateList(kegelList, exercises.kegel);
             populateCustomExercises();
             showMessage('Custom exercise deleted.');
         }
@@ -731,9 +757,8 @@
             setTimeout(() => {
                 new Notification("Workout Reminder", {
                     body: "Time for your daily workout! Let's get moving!",
-                    icon: 'https://via.placeholder.com/32?text=🏋️'
+                    icon: 'https://via.placeholder.com/32?text=🏋️‍♂️'
                 });
-                // Reschedule for next day
                 scheduleNotification(time);
             }, msUntilNotification);
             localStorage.setItem('reminderTime', time);
@@ -752,7 +777,8 @@
         });
 
         startPauseBtn.addEventListener('click', () => {
-            if (isPaused) startTimer(); else pauseTimer();
+            if (isPaused) startTimer();
+            else pauseTimer();
         });
 
         resetBtn.addEventListener('click', resetTimer);
@@ -779,14 +805,27 @@
             const today = new Date();
             const todayFormatted = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
             saveProgress(todayFormatted, 'skipped');
-            showMessage("Today's workout marked as SKIPPED. Don't worry, you can always start fresh tomorrow!");
+            showMessage("Today's workout marked as SKIPPED. Don't worry, tomorrow is a fresh start!");
         });
 
         addCustomExerciseBtn.addEventListener('click', () => {
             const name = customExerciseName.value.trim();
             const reps = customExerciseReps.value.trim();
             const duration = parseInt(customExerciseDuration.value);
-            const video = customExerciseVideo.value.trim();
+            // Ensure video URL is in embed format, if not, try to convert or use a placeholder
+            let video = customExerciseVideo.value.trim();
+            if (video && video.includes("youtube.com/watch?v=")) {
+                video = video.replace("watch?v=", "embed/");
+            } else if (video && video.includes("youtu.be/")) {
+                video = video.replace("youtu.be/", "youtube.com/embed/");
+            }
+            if (video && !video.includes("youtube-nocookie.com/embed/") && !video.includes("youtube.com/embed/")) {
+                video = `https://www.youtube-nocookie.com/embed/${video.split('/').pop()}`; // Fallback to extract ID if simple embed not found
+            } else if (!video) {
+                video = "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"; // Default placeholder if empty
+            }
+
+
             const type = customExerciseType.value;
             if (name && reps && duration) {
                 exercises[type].push({ name, reps, duration, video, isCustom: true });
@@ -795,11 +834,16 @@
                 customExerciseReps.value = '';
                 customExerciseDuration.value = '';
                 customExerciseVideo.value = '';
-                populateList();
+                // Re-populate all lists to ensure custom exercises are added
+                populateList(warmUpList, exercises.warmUp);
+                populateList(corePostureList, exercises.corePosture);
+                populateList(staminaFullBodyList, exercises.staminaFullBody);
+                populateList(stretchingList, exercises.stretching);
+                populateList(kegelList, exercises.kegel);
                 populateCustomExercises();
                 showMessage('Custom exercise added!');
             } else {
-                showMessage('Please fill in all required fields.');
+                showMessage('Please fill in all required fields (Name, Reps, Duration).');
             }
         });
 
@@ -812,15 +856,6 @@
                 showMessage("Invalid time format. Please use HH:MM (e.g., 07:00).");
             }
         });
-
-        // PWA Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js').then(reg => {
-                console.log('Service Worker registered:', reg);
-            }).catch(err => {
-                console.error('Service Worker registration failed:', err);
-            });
-        }
 
         // Initial Load
         document.addEventListener('DOMContentLoaded', () => {
@@ -841,10 +876,14 @@
             renderCalendar();
             streakCountDisplay.textContent = workoutStreak.count;
 
-            // Resume daily reminder if set
             const savedReminderTime = localStorage.getItem('reminderTime');
             if (savedReminderTime && Notification.permission === 'granted') {
                 scheduleNotification(savedReminderTime);
+            }
+
+            // Warn if running locally (file:// protocol)
+            if (window.location.protocol === 'file:') {
+                showMessage('Warning: Videos and PWA features may not load correctly when running locally directly from file. Use a local server (e.g., Live Server extension in VS Code) or deploy to a web server.');
             }
         });
     </script>
