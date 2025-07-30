@@ -284,7 +284,7 @@
                     <p class="text-gray-600 dark-mode:text-gray-300 mb-2 text-sm">Goal: Urge control, sexual stamina, pelvic strength</p>
                     <p class="text-gray-600 dark-mode:text-gray-300 mb-2 text-sm">Time: Raat me (bed pe late hue bhi kar sakte ho)</p>
                     <ul class="list-disc list-inside space-y-1 text-gray-600 dark-mode:text-gray-300 text-sm" id="kegel-list"></ul>
-                    <p class="text-gray-500 dark-mode:text-gray-400 text-xs mt-2">🧠 Reminder: Kegel karte waqt stomach, legs, butt tense na ho — sirf andar ka control. Breathe normally.</p>
+                    <p class="text-gray-500 dark-mode:text-gray-400 text-xs mt-2">🧠 Reminder: Kegel karte waqt stomach, legs, ***** tense na ho — sirf andar ka control. Breathe normally.</p>
                 </div>
                 <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
                     <button id="start-workout-btn" class="btn-primary w-full md:w-auto">Start Today's Workout</button>
@@ -425,21 +425,21 @@
         // Note: Replace these placeholder video URLs with actual YouTube embed URLs (e.g., https://www.youtube.com/embed/VIDEO_ID)
         let exercises = JSON.parse(localStorage.getItem('exercises')) || {
             warmUp: [
-                { name: "Neck rolls", reps: "5 (each side)", duration: 30, video: "https://www.youtube-nocookie.com/embed/q_uOqXQhBq4?si=uDS8Vx3492IkC_vK" },
-                { name: "Shoulder rotation", reps: "10", duration: 30, video: "https://www.youtube-nocookie.com/embed/L1c2J85gQ_E" },
-                { name: "Jumping jacks", reps: "20", duration: 30, video: "https://www.youtube-nocookie.com/embed/Up03b-t9k5w" },
-                { name: "Arm swings", reps: "10", duration: 30, video: "https://www.youtube-nocookie.com/embed/yQpQh0N2w8Q" },
-                { name: "Light march in place", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/E-1H0_o982A" }
+                { name: "Neck rolls", reps: "5 (each side)", duration: 30, video: "https://www.youtube-nocookie.com/embed/X-CUlo4zf0Y?si=RwjLDbrEFHTiVL4D" },
+                { name: "Shoulder rotation", reps: "10", duration: 30, video: "https://www.youtube-nocookie.com/embed/Uf0MKHeT67c?si=hPC4BJahFfp5XIvD" },
+                { name: "Jumping jacks", reps: "20", duration: 30, video: "https://www.youtube-nocookie.com/embed/2W4ZNSwoW_4?si=nUJ24hORNY6ERWTy" },
+                { name: "Arm swings", reps: "10", duration: 30, video: "https://www.youtube-nocookie.com/embed/dW3Pi-RXSyM?si=wSNK563-WseMQNCU" },
+                { name: "Light march in place", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/Ac8M_Osjy6s?si=AFqjylemUrjSKeqk" }
             ],
             corePosture: [
-                { name: "Wall Angel", reps: "10 reps", duration: 60, video: "https://www.youtube-nocookie.com/embed/fW_g8I_aK6c" },
-                { name: "Bird Dog", reps: "10 reps each side", duration: 60, video: "https://www.youtube-nocookie.com/embed/wiFNA3QB_Ew" },
-                { name: "Glute Bridge", reps: "15", duration: 60, video: "https://www.youtube-nocookie.com/embed/ayh01z2U65g" },
-                { name: "Superman Hold", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/z6CgC_e1y4M" },
-                { name: "Plank", reps: "start 20 sec → aim 1 min", duration: 60, video: "https://www.youtube-nocookie.com/embed/ASdvN_Xok6c" }
+                { name: "Wall Angel", reps: "10 reps", duration: 60, video: "https://www.youtube-nocookie.com/embed/cvx06snMQ3A?si=5BDR-KCHK2cRIYcF" },
+                { name: "Bird Dog", reps: "10 reps each side", duration: 60, video: "https://www.youtube-nocookie.com/embed/v0oCYe8__bU?si=suPTIbT65qMifqO4" },
+                { name: "Glute Bridge", reps: "15", duration: 60, video: "https://www.youtube-nocookie.com/embed/9qo48CYN06w?si=d-BpWhK7eeLqPEi8" },
+                { name: "Superman Hold", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/pGeaBXLwDtw?si=Lkk5-NzGcA-tD5Yt" },
+                { name: "Plank", reps: "start 20 sec → aim 1 min", duration: 60, video: "https://www.youtube-nocookie.com/embed/Fcbw82ykBvY?si=4VD88JCwcMStAss2" }
             ],
             staminaFullBody: [
-                { name: "Squats", reps: "15", duration: 60, video: "https://www.youtube-nocookie.com/embed/ultWfYNEkEM" },
+                { name: "Squats", reps: "15", duration: 60, video: "https://www.youtube-nocookie.com/embed/42bFodPahBU?si=c5VaYI4y6BBq4Mtw" },
                 { name: "Incline Push-ups", reps: "10", duration: 60, video: "https://www.youtube-nocookie.com/embed/3L_s6p8s96E" },
                 { name: "Step-up", reps: "10/leg", duration: 60, video: "https://www.youtube-nocookie.com/embed/V6dK11Q4yI8" },
                 { name: "High Knees", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/QP_x6s-vQ8I" },
@@ -447,13 +447,13 @@
                 { name: "Mountain Climbers", reps: "20", duration: 60, video: "https://www.youtube-nocookie.com/embed/nmwgirgX2QU" }
             ],
             stretching: [
-                { name: "Toe Touch Hold", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/S_x2F603M5o" },
-                { name: "Cat-Cow Stretch", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/kqn2_Xg_J5E" },
-                { name: "Seated Forward Fold", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/M1Q92B6W66U" },
-                { name: "Butterfly Stretch", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/HwJ8d_wG160" },
-                { name: "Child's Pose", reps: "1 min", duration: 60, video: "https://www.youtube-nocookie.com/embed/2MJGg-d_M04" },
-                { name: "Shoulder Stretch", reps: "30 sec", duration: 60, video: "https://www.youtube-nocookie.com/embed/e_yWp9g9R7g" },
-                { name: "Neck side stretch", reps: "30 sec each", duration: 60, video: "https://www.youtube-nocookie.com/embed/z4tC99z3N8U" },
+                { name: "Toe Touch Hold", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/Xvr5N_Xf6QM?si=7LhhgFJnA19Zjc4n" },
+                { name: "Cat-Cow Stretch", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/w_UKcI1Ftn8?si=HbCNgiyqrgGwElNE" },
+                { name: "Seated Forward Fold", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/1CkumUyO7tE?si=n2p-SEThoz3FhoK6" },
+                { name: "Butterfly Stretch", reps: "30 sec", duration: 30, video: "https://www.youtube-nocookie.com/embed/4J7kbCmPScQ?si=MND63XdYdwp90tRQ" },
+                { name: "Child's Pose", reps: "1 min", duration: 60, video: "https://www.youtube-nocookie.com/embed/DMwRPGMPB10?si=L-EJSBQ_AC6EIlLr" },
+                { name: "Shoulder Stretch", reps: "30 sec", duration: 60, video: "https://www.youtube-nocookie.com/embed/9k0EN2RCGgU?si=9qCuZL_K6JV45Drb" },
+                { name: "Neck side stretch", reps: "30 sec each", duration: 60, video: "https://www.youtube-nocookie.com/embed/e-zXrtIPjMc?si=hKwWiXSv-haKk1B-" },
                 { name: "Deep breathing", reps: "1 min", duration: 60, video: "https://www.youtube-nocookie.com/embed/nmF1f7C442Q" }
             ],
             kegel: [
